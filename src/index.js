@@ -1,1 +1,1 @@
-console.log("hey");
+import Model from "./model";
