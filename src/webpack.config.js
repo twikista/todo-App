@@ -7,4 +7,16 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
   },
   devtool: "inline-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.js$/i,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: ["@babel/preset-env"],
+        },
+      },
+    ],
+  },
 };
