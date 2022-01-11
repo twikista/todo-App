@@ -50,4 +50,23 @@ class Model {
     const data = { fileredProject: todos, proName: projectName };
     pubsub.publish("addedtodo", data);
   }
+
+  removeTask(data) {
+    const projectName = data.task;
+    const id = data.taskId;
+    this.projects[projectName] = this.projects[projectName].filter(
+      (project) => project.id !== id
+    );
+    const sendData = {
+      fileredProject: this.projects[projectName],
+      proName: projectName,
+    };
+    pubsub.publish("task-removed", sendData);
+  }
+
+  showprojects() {
+    for (let key in this.projects) {
+      console.log(key);
+    }
+  }
 }
