@@ -26,4 +26,28 @@ class Model {
     this.projects[project] = [];
     pubsub.publish("updateDisplay", this.projects);
   }
+
+  addTodo(receivedData) {
+    const projectName = receivedData.activeProject;
+    const srn =
+      this.projects[projectName].length > 0
+        ? this.projects[projectName][this.projects[projectName].length - 1].id +
+          1
+        : 1;
+    console.log(srn);
+
+    const todo = {
+      id:
+        this.projects[projectName].length > 0
+          ? this.projects[projectName][this.projects[projectName].length - 1]
+              .id + 1
+          : 1,
+      title: receivedData.todoTitle,
+      complete: false,
+    };
+    this.projects[projectName].push(todo);
+    const todos = this.projects[projectName];
+    const data = { fileredProject: todos, proName: projectName };
+    pubsub.publish("addedtodo", data);
+  }
 }
