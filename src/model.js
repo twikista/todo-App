@@ -1,84 +1,29 @@
-// class Todos {
-//   constructor(title, description) {
-//     this.id = id;
-//     this.title = title;
-//     this.description = description;
-//     this.completed = false;
-//   }
-// }
-
-// function createTodo({title, description}){
-//   const todo = new Todos(title, description);
-//   return todo
-// }
-
 class Model {
   constructor() {
-    this.todos = [
-      { id: 1, title: "Go shopping", completed: false, proirity: "medium" },
-      { id: 2, title: "Do laundry", completed: false, priority: "high" },
-    ];
-  }
-  addTodo(todoText, priority = "normal") {
-    const todo = {
-      id: this.todos.length > 0 ? this.todos[this.todos.length - 1].id + 1 : 0,
-      title: todoText,
-      completed: false,
-      priority,
+    this.projects = {
+      inbox: [
+        { id: "inbox001", title: "go shopping", complete: false },
+        { id: "inbox002", title: "go cycling", complete: true },
+      ],
+      work: [
+        { id: "work001", title: "go for meeting", complete: false },
+        { id: "work002", title: "submit sales reprot", complete: false },
+      ],
     };
-    this.todos.push(todo);
   }
+  createProject(project) {
+    console.log(project);
+    for (let key in this.projects) {
+      if (`${project}` in this.projects) {
+        console.log(`${project} project already exist`);
+        return;
+      }
+    }
+    if (!project) {
+      return;
+    }
 
-  editTodo(id, editText) {
-    this.todos = this.todos.map((todo) =>
-      todo.id === id
-        ? {
-            id: todo.id,
-            title: editText,
-            completed: todo.completed,
-            priority: todo.priority,
-          }
-        : todo
-    );
-  }
-
-  deleteTodo(id) {
-    this.todos = this.todos.filter((todo) => todo.id !== id);
-  }
-
-  toggleTodoCompleted(id) {
-    this.todos = this.todos.map((todo) =>
-      todo.id === id
-        ? {
-            id: todo.id,
-            title: todo.title,
-            completed: !todo.completed,
-            priority: todo.priority,
-          }
-        : todo
-    );
-  }
-
-  chooseTodoPriority(id, updatedPriority) {
-    this.todos = this.todos.map((todo) =>
-      todo.id === id
-        ? {
-            id: todo.id,
-            title: todo.title,
-            completed: todo.completed,
-            proirity: updatedPriority,
-          }
-        : todo
-    );
+    this.projects[project] = [];
+    pubsub.publish("updateDisplay", this.projects);
   }
 }
-
-const model = new Model();
-console.log(model);
-model.addTodo("go hiking", "normal");
-model.addTodo("go jumping", "high");
-model.editTodo(2, "go swimming");
-model.toggleTodoCompleted(2);
-model.chooseTodoPriority(1, "medium");
-
-export default Model;
